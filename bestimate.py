@@ -7,9 +7,7 @@ import datetime
 import calendar
 from sqlalchemy import create_engine
 import psycopg2
-
 import os
-
 os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
 
 def insert2pgSql(result, database, table = [], table_list = []):
@@ -93,7 +91,7 @@ def defr_1441010001(n_day, date_this, cvs_data):
                        14: 'r_1441010014', 21: 'r_1441010021', 30: 'r_1441010030'}
 
     b = cvs_data.groupby('bcode').apply(
-        lambda x: x.loc[x['data_date'].idxmax(), 'yield'] - x.loc[x['data_date'].idxmin(), 'yield']).resetindex()
+        lambda x: x.loc[x['data_date'].idxmax(), 'yield'] - x.loc[x['data_date'].idxmin(), 'yield']).reset_index()
     c = cvs_data.groupby('bcode').apply(lambda y: np.min(y['data_date'])).reset_index()
     cvs_data = pd.merge(b, c, on = 'bcode', how = 'inner')
     cvs_data.columns = ['bcode', 'yield_diff' 'data_date']
